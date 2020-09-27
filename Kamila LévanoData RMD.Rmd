@@ -1,0 +1,109 @@
+#Alumna: Kamila Lévano Quijandria 
+#Código: 20155334
+#Tema: Factores que influyen en la partición política de las mujeres (partición entendida como votos en elecciones)
+#Variables de la sección factores económicos: 
+#Las 3 bases han sido descargadas del Portal del Banco Mundial de la sección “Gender Data Portal” :http://datatopics.worldbank.org/gender/indicators
+#Link de cada variable y explicación: 
+1.	# Porcentaje de Mujeres de 15 años a más que tiene una cuenta bancaria en una institución financiera o de un proveedor de servicios móviles de dinero(a nivel de cada nación): Aquella variable es importante debido a que encontrarse insertado en el sistema financiero te hace más sensible, involucrado y afectado ante los cambios que los decisores políticos tomen en materia económica; por tanto, puede influir en que aquellas mujeres que sean parte del sistema financiero, decidan involucrarse y participar en las votaciones políticas. Asimismo, la variable es nominal por encontrarse en porcentaje. 
+Link: https://databank.worldbank.org/indicator/FX.OWN.TOTL.FE.ZS?id=2ddc971b&report_name=Gender_Indicators_Report&populartype=series
+2.	#Porcentaje de mujeres (entre 15 y 24 años) insertadas en la fuerza laboral (estimación a nivel de cada nación): Aquella variable es fundamental debido a que las mujeres que las mujeres insertadas en el campo laboral, podrían tener más incentivos para participar en las votaciones políticas debido a que son afectadas por los cambios en materia laboral que los decisores decidan implementar. Muchas de estas podrían estar interesadas en reformas laborales. Asimismo, aquella variable es nominal (valores en porcentajes). 
+
+Link: https://databank.worldbank.org/indicator/SL.TLF.ACTI.1524.FE.NE.ZS?id=2ddc971b&report_name=Gender_Indicators_Report&populartype=series
+
+3.	#Número de mujeres con negocios propios (a nivel de cada nación): Esta variable también resulta importante debido a que las mujeres dueñas de un negocio propio, son más propensas a interesarse en los cambios políticos en materia laboral ya que también son mucho más sensibles y directamente afectadas en su economía por algún cambio en aquella materia laboral (por ejemplo, aumento de impuestos). Por ello, aquellas mujeres podrían tener incentivos para votar por el candidato que defienda sus intereses en su negocio, ya que son mujeres económicamente activas, las cuales, por lo general, buscan una estabilidad política para que sus negocios se mantengan estables en el tiempo. Esta variable es escalar. 
+
+Link: https://databank.worldbank.org/indicator/IC.WEF.LLCO.FE?id=2ddc971b&report_name=Gender_Indicators_Report&populartype=series
+
+```{r}
+library(readxl)
+neg <- read_excel("C:/Users/LENOVO/Desktop/KAMILA ESTD 2/bases trab/Negocio propio.xlsx")
+View(neg)
+```
+
+```{r}
+summary(neg)
+```
+
+```{r}
+neg[,c(2:12)]=lapply(neg[,c(2:12)],as.numeric)
+```
+```{r}
+neg=neg[,c(1,5:9)]
+```
+
+```{r}
+neg2=neg[complete.cases(neg),]
+```
+
+```{r}
+library(readxl)
+emp <- read_excel("C:/Users/LENOVO/Desktop/KAMILA ESTD 2/bases trab/mujeres con empleo.xls")
+View(emp)
+```
+```{r}
+emp2=emp[,c(1,55:60)]
+```
+
+```{r}
+names(emp2)=emp2[3,]
+```
+
+```{r}
+emp2=emp2[-c(1:3),]
+```
+
+```{r}
+str(emp2)
+```
+```{r}
+emp2[,c(2:7)]=lapply(emp2[,c(2:7)],as.numeric)
+```
+
+# financiera
+
+```{r}
+library(readxl)
+fin <- read_excel("C:/Users/LENOVO/Desktop/KAMILA ESTD 2/bases trab/Cuenta en institucion financiera.xlsx")
+View(fin)
+```
+```{r}
+fin=fin[,c(1,2,5,8)]
+```
+
+```{r}
+fin[,c(2:4)]=lapply(fin[,c(2:4)],as.numeric)
+```
+```{r}
+str(fin)
+```
+```{r}
+dim(fin)
+```
+
+```{r}
+fin=fin[-c(264),]
+```
+
+
+```{r}
+names(fin)=c("PAIS","FIN_2011","FIN_2014","FIN_2017")
+```
+
+```{r}
+names(emp2)=c("PAIS","EMP_2010","EMP_2011","EMP_2012","EMP_2013","EMP_2014","EMP_2015")
+```
+
+```{r}
+names(neg)=c("PAIS","NEG_2014","NEG_2015","NEG_2016","NEG_2017","NEG_2018")
+```
+
+
+```{r}
+aux=merge(neg,emp2)
+final=merge(aux,fin)
+```
+
+```{r}
+str(final)
+```
+
